@@ -1,6 +1,6 @@
 {
   "name": "ndx-socket",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "websockets for ndx-framework",
   "main": "build/index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "url": "https://github.com/ndxbxrme/ndx-socket"
   },
   "author": "ndxbxrme",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ndxbxrme/ndx-socket/issues"
   },

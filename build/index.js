@@ -24,11 +24,9 @@
     };
     io = socketio.listen(ndx.server);
     io.on('connection', function(socket) {
-      console.log('socket connection');
       sockets.push(socket);
       safeCallback('connection', socket);
       return socket.on('disconnect', function() {
-        console.log('socket disconnect');
         sockets.splice(sockets.indexOf(socket, 1));
         return safeCallback('disconnect', socket);
       });

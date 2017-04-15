@@ -19,6 +19,8 @@ module.exports = (ndx) ->
     #console.log 'socket connection'
     sockets.push socket
     safeCallback 'connection', socket
+    socket.on 'user', (user) ->
+      socket.user = user
     socket.on 'disconnect', ->
       #console.log 'socket disconnect'
       sockets.splice sockets.indexOf(socket, 1)
@@ -30,3 +32,7 @@ module.exports = (ndx) ->
     off: (name, callback) ->
       callbacks[name].splice callbacks[name].indexOf(callback), 1
       @
+    emitToUsers: (users, name, data) ->
+      async.each sockets, (socket) ->
+        if users.indexOf(socket.user) isnt -1
+          socket.emit name, data

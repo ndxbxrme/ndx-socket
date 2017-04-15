@@ -26,6 +26,9 @@
     io.on('connection', function(socket) {
       sockets.push(socket);
       safeCallback('connection', socket);
+      socket.on('user', function(user) {
+        return socket.user = user;
+      });
       return socket.on('disconnect', function() {
         sockets.splice(sockets.indexOf(socket, 1));
         return safeCallback('disconnect', socket);
@@ -39,6 +42,13 @@
       off: function(name, callback) {
         callbacks[name].splice(callbacks[name].indexOf(callback), 1);
         return this;
+      },
+      emitToUsers: function(users, name, data) {
+        return async.each(sockets, function(socket) {
+          if (users.indexOf(socket.user) !== -1) {
+            return socket.emit(name, data);
+          }
+        });
       }
     };
   };

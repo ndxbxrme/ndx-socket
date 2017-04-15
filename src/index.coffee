@@ -1,8 +1,7 @@
 'use strict'
 
 socketio = require 'socket.io'
-
-
+async = require 'async'
 
 module.exports = (ndx) ->
   io = null

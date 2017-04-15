@@ -1,8 +1,10 @@
 (function() {
   'use strict';
-  var socketio;
+  var async, socketio;
 
   socketio = require('socket.io');
+
+  async = require('async');
 
   module.exports = function(ndx) {
     var callbacks, io, safeCallback, sockets;

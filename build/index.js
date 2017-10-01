@@ -12,7 +12,8 @@
     sockets = [];
     callbacks = {
       connection: [],
-      disconnect: []
+      disconnect: [],
+      user: []
     };
     safeCallback = function(name, obj) {
       var cb, i, len, ref, results;
@@ -29,7 +30,8 @@
       sockets.push(socket);
       safeCallback('connection', socket);
       socket.on('user', function(user) {
-        return socket.user = user;
+        socket.user = user;
+        return safeCallback('user', socket);
       });
       return socket.on('disconnect', function() {
         sockets.splice(sockets.indexOf(socket, 1));
@@ -46,10 +48,23 @@
         return this;
       },
       emitToUsers: function(users, name, data) {
-        return async.each(sockets, function(socket) {
+        return async.each(sockets, function(socket, callback) {
           if (users.indexOf(socket.user) !== -1) {
-            return socket.emit(name, data);
+            socket.emit(name, data);
           }
+          return callback();
+        });
+      },
+      users: function(cb) {
+        var output;
+        output = [];
+        return async.each(sockets, function(socket, callback) {
+          if (socket.user) {
+            output.push(socket.user);
+          }
+          return callback();
+        }, function() {
+          return typeof cb === "function" ? cb(output) : void 0;
         });
       }
     };

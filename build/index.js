@@ -16,11 +16,11 @@
       user: []
     };
     safeCallback = function(name, obj) {
-      var cb, i, len, ref, results;
+      var cb, j, len, ref, results;
       ref = callbacks[name];
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        cb = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        cb = ref[j];
         results.push(cb(obj));
       }
       return results;
@@ -30,11 +30,25 @@
       sockets.push(socket);
       safeCallback('connection', socket);
       socket.on('user', function(user) {
-        socket.user = user;
+        var j, len, s;
+        for (j = 0, len = sockets.length; j < len; j++) {
+          s = sockets[j];
+          if (s.id === socket.id) {
+            s.user = user;
+            break;
+          }
+        }
         return safeCallback('user', socket);
       });
       return socket.on('disconnect', function() {
-        sockets.splice(sockets.indexOf(socket, 1));
+        var i, j, len, s;
+        for (i = j = 0, len = sockets.length; j < len; i = ++j) {
+          s = sockets[i];
+          if (s.id === socket.id) {
+            sockets.splice(i, 1);
+            break;
+          }
+        }
         return safeCallback('disconnect', socket);
       });
     });
@@ -49,8 +63,15 @@
       },
       emitToUsers: function(users, name, data) {
         return async.each(sockets, function(socket, callback) {
-          if (users.indexOf(socket.user) !== -1) {
-            socket.emit(name, data);
+          var j, len, user;
+          if (socket.user) {
+            for (j = 0, len = users.length; j < len; j++) {
+              user = users[j];
+              if (user[ndx.settings.AUTO_ID] === socket.user[ndx.settings.AUTO_ID]) {
+                socket.emit(name, data);
+                break;
+              }
+            }
           }
           return callback();
         });

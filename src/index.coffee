@@ -20,11 +20,16 @@ module.exports = (ndx) ->
     sockets.push socket
     safeCallback 'connection', socket
     socket.on 'user', (user) ->
-      socket.user = user
+      for s in sockets
+        if s.id is socket.id
+          s.user = user
+          break
       safeCallback 'user', socket
     socket.on 'disconnect', ->
-      #console.log 'socket disconnect'
-      sockets.splice sockets.indexOf(socket, 1)
+      for s, i in sockets
+        if s.id is socket.id
+          sockets.splice i, 1
+          break
       safeCallback 'disconnect', socket
   ndx.socket = 
     on: (name, callback) ->
@@ -35,8 +40,11 @@ module.exports = (ndx) ->
       @
     emitToUsers: (users, name, data) ->
       async.each sockets, (socket, callback) ->
-        if users.indexOf(socket.user) isnt -1
-          socket.emit name, data
+        if socket.user
+          for user in users
+            if user[ndx.settings.AUTO_ID] is socket.user[ndx.settings.AUTO_ID]
+              socket.emit name, data
+              break
         callback()
     users: (cb) ->
       output = []

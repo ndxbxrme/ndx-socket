@@ -50,7 +50,7 @@ module.exports = (ndx) ->
       output = []
       async.each sockets, (socket, callback) ->
         if socket.user
-          output.push socket.user
+          output.push JSON.parse JSON.stringify socket.user
         callback()
       , ->
         cb? output

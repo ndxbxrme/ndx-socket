@@ -1,6 +1,6 @@
 {
   "name": "ndx-socket",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "websockets for ndx-framework",
   "main": "build/index.js",
   "scripts": {

@@ -81,7 +81,7 @@
         output = [];
         return async.each(sockets, function(socket, callback) {
           if (socket.user) {
-            output.push(socket.user);
+            output.push(JSON.parse(JSON.stringify(socket.user)));
           }
           return callback();
         }, function() {

@@ -69,7 +69,6 @@
               user = users[j];
               if (user && user[ndx.settings.AUTO_ID] === socket.user[ndx.settings.AUTO_ID]) {
                 socket.emit(name, data);
-                break;
               }
             }
           }

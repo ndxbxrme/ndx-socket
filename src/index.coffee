@@ -44,7 +44,6 @@ module.exports = (ndx) ->
           for user in users
             if user and user[ndx.settings.AUTO_ID] is socket.user[ndx.settings.AUTO_ID]
               socket.emit name, data
-              break
         callback()
     users: (cb) ->
       output = []

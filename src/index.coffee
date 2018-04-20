@@ -42,7 +42,7 @@ module.exports = (ndx) ->
       async.each sockets, (socket, callback) ->
         if socket.user
           for user in users
-            if user and user[ndx.settings.AUTO_ID] is socket.user[ndx.settings.AUTO_ID]
+            if user and user[ndx.settings.AUTO_ID].toString() is socket.user[ndx.settings.AUTO_ID].toString()
               socket.emit name, data
         callback()
     users: (cb) ->

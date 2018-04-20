@@ -67,7 +67,7 @@
           if (socket.user) {
             for (j = 0, len = users.length; j < len; j++) {
               user = users[j];
-              if (user && user[ndx.settings.AUTO_ID] === socket.user[ndx.settings.AUTO_ID]) {
+              if (user && user[ndx.settings.AUTO_ID].toString() === socket.user[ndx.settings.AUTO_ID].toString()) {
                 socket.emit(name, data);
               }
             }

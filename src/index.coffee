@@ -110,7 +110,7 @@ module.exports = (ndx) ->
           name: name
           data: data
       else
-        fns.emitToAll users, name, data
+        fns.emitToAll null, name, data
     dbFn: (args) ->
       if ndx.settings.CLUSTER
         cio.emit 'call',

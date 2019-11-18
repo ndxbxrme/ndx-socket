@@ -167,7 +167,7 @@
             data: data
           });
         } else {
-          return fns.emitToAll(users, name, data);
+          return fns.emitToAll(null, name, data);
         }
       },
       dbFn: function(args) {
